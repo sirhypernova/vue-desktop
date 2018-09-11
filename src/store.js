@@ -10,7 +10,8 @@ export default new Vuex.Store({
     menuApps: {},
     activeWindows: {},
     activeApp: 0,
-    maxActive: 1
+    maxActive: 1,
+    credentials: ''
   },
   mutations: {
     setTitle(state,title) {
@@ -28,12 +29,21 @@ export default new Vuex.Store({
         windowSettings: data.windowSettings
       };
     },
+    clearApps(state) {
+      state.activeWindows = {};
+      state.activeApp = 0;
+      state.maxActive = 1;
+    },
     createWindow(state,data) {
       if (data.pid && data.pid in state.activeWindows) {
         state.activeWindows[data.pid].windowSettings.open = true;
         return;
       }
-      var pid = Math.floor(Math.random() * (999999 - 100000)) + 100000;
+      var pid;
+      (function setPid() {
+        pid = Math.floor(Math.random() * (999999 - 100000)) + 100000;
+        if (pid in state.activeWindows) setPid();
+      })();
       Vue.set(state.activeWindows,pid,{component: data.component, windowSettings: Object.assign({},data.windowSettings), style: data.style, pid: pid, active: state.maxActive++});
     },
     removeWindow(state,name) {
@@ -48,6 +58,9 @@ export default new Vuex.Store({
     setActiveApp(state,pid) {
       if (!(pid in state.activeWindows)) return;
       state.activeApp = state.activeWindows[pid].active;
+    },
+    setCredentials(state,credentials) {
+      state.credentials = credentials;
     }
   },
   actions: {

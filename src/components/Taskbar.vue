@@ -40,5 +40,6 @@
     }
     .v-bottom-nav {
         overflow: hidden !important;
+        z-index: 2147483646;
     }
 </style>

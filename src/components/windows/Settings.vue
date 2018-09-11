@@ -1,17 +1,22 @@
 <template>
     <window title="Settings" :close="true" :parent="parseInt(pid)" :resizable="false" :width="400" :height="400">
-        <v-layout row justify-space-between>
-            <v-flex xs10>
-                <h1>Background Color</h1>
-            </v-flex>
-            <v-flex xs2>
-                <swatches v-model="background" colors="material-basic" popover-to="left" swatch-size="30" show-fallback></swatches>
-            </v-flex>
-        </v-layout>
+        <hoverutil>
+            <v-layout row justify-space-between>
+                <v-flex xs10>
+                    <swatches v-model="background" colors="material-basic" popover-to="right" swatch-size="30" show-fallback>
+                        <h1 slot="trigger">Background Color</h1>
+                    </swatches>
+                </v-flex>
+                <v-flex xs2>
+                    <swatches v-model="background" colors="material-basic" popover-to="left" swatch-size="30" show-fallback></swatches>
+                </v-flex>
+            </v-layout>
+        </hoverutil>
     </window>
 </template>
 
 <script>
+    import HoverUtil from '@/components/Utils/Hover';
     import store from '@/store';
     
     const component = {
@@ -51,5 +56,8 @@
                 }
             }
         },
+        components: {
+            hoverutil: HoverUtil
+        }
     }
 </script>

@@ -17,11 +17,22 @@
 
             <v-list-tile-action>
               <v-btn
-                :class="logout ? 'red--text' : ''"
+                :class="clearApps ? 'blue--text' : ''"
                 icon
-                @mouseover="logout = true"
-                @mouseleave="logout = false"
-                @click="menu = false"
+                @mouseover="clearApps = true"
+                @mouseleave="clearApps = false"
+                @click="clearAllApps"
+              >
+                <v-icon>clear_all</v-icon>
+              </v-btn>
+            </v-list-tile-action>
+            <v-list-tile-action>
+              <v-btn
+                :class="logoutRed ? 'red--text' : ''"
+                icon
+                @mouseover="logoutRed = true"
+                @mouseleave="logoutRed = false"
+                @click="logout"
               >
                 <v-icon>exit_to_app</v-icon>
               </v-btn>
@@ -52,18 +63,41 @@
         data() {
             return {
                 menu: false,
-                logout: false
+                logoutRed: false,
+                clearApps: false
             }
         },
         methods: {
             createWindow(data) {
                 this.$store.commit('createWindow',data);
+            },
+            logout() {
+                this.loggedIn = false;
+                this.clearAllApps();
+            },
+            clearAllApps() {
+              this.menu = false;
+              this.$store.commit('clearApps');
             }
         },
         computed: {
             apps() {
                 return this.$store.state.menuApps;
+            },
+            loggedIn: {
+                get() {
+                    return this.$store.state.credentials;
+                },
+                set(credentials) {
+                    this.$store.commit('setCredentials',credentials);
+                }
             }
         }
     }
 </script>
+
+<style scoped>
+  .v-menu__content {
+    z-index: 2147483647;
+  }
+</style>

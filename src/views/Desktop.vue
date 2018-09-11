@@ -1,11 +1,15 @@
 <template>
   <div :style="desktopStyle">
-    <component v-for="(window,pid) in windows" :key="pid" :is="window.component" :pid="pid"></component>
-    <taskbar></taskbar>
+    <login>
+      <component v-for="(window,pid) in windows" :key="pid" :is="window.component" :pid="pid"></component>
+      <taskbar></taskbar>
+    </login>
   </div>
 </template>
 
 <script>
+  import Login from '@/views/Login';
+
   export default {
     mounted() {
       document.title = this.title;
@@ -20,11 +24,14 @@
         return this.$store.state.title;
       },
       desktopStyle() {
-        return `width: 100%; height: 100%; background-color: ${this.$store.state.background == 'default' ? '#42A5F5' : this.$store.state.background}`;
+        return `width: 100%; height: 100%; transition: 0.5s; background-color: ${this.$store.state.background == 'default' ? '#42A5F5' : this.$store.state.background}`;
       },
       windows() {
           return this.$store.state.activeWindows;
       }
+    },
+    components: {
+      login: Login
     }
   }
 </script>
