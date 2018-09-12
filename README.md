@@ -10,7 +10,8 @@ npm install
 cd backend
 PORT=8082 node index.js
 ```
-**Now go to the src folder, and edit config.js with the backend port and IP**
+**Now go to the src folder, and copy `config.example.js` to `config.js`**
+**Once you are done with that, fill in the config with your IP and port of the backend server**
 
 ### Compiles and hot-reloads for development
 ```
