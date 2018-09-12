@@ -17,15 +17,17 @@
         }
     }
     
-    store.commit('addMenuApp', {
-        name: component.launchName,
-        style: {
-            color: 'orange',
-            icon: 'music_note'
-        },
-        component: component.name,
-        windowSettings: component.windowSettings
-    });
+    if (!(plexURL == undefined || typeof plexURL != 'string' || !plexURL.length)) {
+        store.commit('addMenuApp', {
+            name: component.launchName,
+            style: {
+                color: 'orange',
+                icon: 'music_note'
+            },
+            component: component.name,
+            windowSettings: component.windowSettings
+        });
+    }
     
     export default {
         name: component.name,
