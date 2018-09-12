@@ -7,6 +7,9 @@ export default class Connection {
         
         this.socket.on('connect',this.connect.bind(this));
         this.socket.on('disconnect',this.disconnect.bind(this));
+        this.socket.on('setBackground',this.setBackgroundEvent.bind(this));
+        
+        this.setup = true;
     }
     
     connect() {
@@ -24,8 +27,33 @@ export default class Connection {
     }
     
     checkLogin() {
-        this.socket.emit('isLoggedIn',null,response => {
+        this.socket.emit('isLoggedIn',response => {
             store.commit('setLoggedIn',response);
+            this.fetchUserData(data => {
+                store.commit('setBackgroundLocal',data.config.background);
+                store.commit('setUsernameLocal',data.username);
+                this.setup = false;
+            });
         })
+    }
+    
+    logout() {
+        this.socket.emit('logout', () => {
+            store.commit('setLoggedIn',false);
+            store.commit('setBackgroundLocal','default');
+        });
+    }
+    
+    setBackground(background) {
+        if (this.setup) return;
+        this.socket.emit('setBackground',background);
+    }
+    
+    setBackgroundEvent(background) {
+        store.commit('setBackgroundLocal',background);
+    }
+    
+    fetchUserData(callback) {
+        this.socket.emit('fetchUserData',callback);
     }
 }

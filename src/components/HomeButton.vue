@@ -11,7 +11,7 @@
             </v-list-tile-avatar>
 
             <v-list-tile-content>
-              <v-list-tile-title>Username</v-list-tile-title>
+              <v-list-tile-title>{{ username }}</v-list-tile-title>
               <v-list-tile-sub-title>Data about user</v-list-tile-sub-title>
             </v-list-tile-content>
 
@@ -58,6 +58,8 @@
 </template>
 
 <script>
+    import api from '@/api';
+
     export default {
         name: 'HomeButton',
         data() {
@@ -72,7 +74,7 @@
                 this.$store.commit('createWindow',data);
             },
             logout() {
-                this.loggedIn = false;
+                api.logout();
                 this.clearAllApps();
             },
             clearAllApps() {
@@ -91,6 +93,9 @@
                 set(value) {
                     this.$store.commit('setLoggedIn',value);
                 }
+            },
+            username() {
+              return this.$store.state.username;
             }
         }
     }

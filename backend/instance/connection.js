@@ -3,10 +3,11 @@ module.exports = class Connection {
         this.socket = socket;
         this.api = api;
         
-        socket.handshake.session.save();
+        this.bound = false;
         
         socket.on('disconnect',this.disconnect.bind(this));
         socket.on('login',this.login.bind(this));
+        socket.on('logout',this.logout.bind(this));
         socket.on('isLoggedIn', this.isLoggedIn.bind(this));
         
         console.log(`Socket connected with ID ${socket.id}`);
@@ -31,14 +32,48 @@ module.exports = class Connection {
             if (user == undefined) return callback('Incorrect username or password');
             require('bcrypt').compare(data.password,user.password).then(correct => {
                 if (!correct) return callback('Incorrect username or password');
-                this.socket.handshake.session.user = {username: user.username};
-                callback({username: user.username});
+                this.api.db.select('*').from('config').where('user',user.id).then(rows => {
+                    var config = {};
+                    rows.forEach(row => {
+                        config[row.key] = row.value;
+                    });
+                    this.socket.handshake.session.user = {username: user.username, id: user.id, config: config};
+                    this.socket.handshake.session.save();
+                    
+                    callback({username: user.username, config: config});
+                });
             });
         });
     }
     
-    isLoggedIn(data,callback) {
+    logout(callback) {
+        if (callback == undefined || typeof callback != 'function') return;
+        if (!this.socket.handshake.session.user) return;
+        this.socket.leave(this.socket.handshake.session.user.id);
+        delete this.socket.handshake.session.user;
+        this.socket.handshake.session.save();
+        callback();
+    }
+    
+    isLoggedIn(callback) {
         if (callback == undefined || typeof callback != 'function') return;
         callback(!!this.socket.handshake.session.user);
+        if (this.socket.handshake.session.user) {
+            this.socket.join(this.socket.handshake.session.user.id);
+            this.bindEvents();
+        }
+    }
+    
+    bindEvents() {
+        if (this.bound) return;
+        this.bound = true;
+        const settings = require('./settings');
+        for (let key in settings) {
+            this.socket.on(key,(...data) => {
+                let value = settings[key];
+                if (!this.socket.handshake.session.user) return;
+                value.bind(this)(...data);
+            });
+        }
     }
 }

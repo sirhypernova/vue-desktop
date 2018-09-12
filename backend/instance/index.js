@@ -67,7 +67,9 @@ module.exports = class DesktopAPI {
                     table.string('password');
                 }).then(() => {
                     require('bcrypt').hash('admin',10).then(hash => {
-                        this.db.insert({username: 'admin', password: hash}).into('users').then();
+                        this.db.insert({username: 'admin', password: hash}).into('users').then(id => {
+                            this.db.insert({key: 'background', value: 'default', user: id[0]}).into('config').then();
+                        })
                     })
                 });
             })
@@ -88,6 +90,8 @@ module.exports = class DesktopAPI {
                     table.string('key');
                     
                     table.string('value');
+                    
+                    table.integer('user');
                 }).then(() => {
                     this.sessionKey = require('nanoid')(32);
                     this.db.insert({key: 'sessionKey', value: this.sessionKey}).into('config').then();

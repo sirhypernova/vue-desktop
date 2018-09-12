@@ -66,15 +66,19 @@
                     if (typeof response == 'string') {
                         this.loading = false;
                         this.error = response;
+                        this.success = false;
                         return;
                     }
+                    this.success = true;
                     setTimeout(() => {
+                        this.$store.commit('setBackground',response.config.background);
                         this.loggedIn = true;
+                        this.success = false;
                         this.error = '';
-                        this.success = true;
                         this.login = '';
                         this.password = '';
                         this.loading = false;
+                        api.checkLogin();
                     },250);
                 });
             }

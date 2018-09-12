@@ -1,17 +1,19 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
+import api from '@/api';
 
 Vue.use(Vuex)
 
 export default new Vuex.Store({
   state: {
     title: 'Vue Desktop',
-    background: localStorage.getItem('background') || 'default',
+    background: 'default',
     menuApps: {},
     activeWindows: {},
     activeApp: 0,
     maxActive: 1,
     loggedIn: false,
+    username: '',
     socketConnected: false
   },
   mutations: {
@@ -20,7 +22,10 @@ export default new Vuex.Store({
     },
     setBackground(state,data) {
       state.background = data;
-      localStorage.setItem('background',data);
+      api.setBackground(data);
+    },
+    setBackgroundLocal(state,data) {
+      state.background = data;
     },
     addMenuApp(state,data) {
       state.menuApps[data.component] = {
@@ -62,6 +67,9 @@ export default new Vuex.Store({
     },
     setLoggedIn(state,loggedIn) {
       state.loggedIn = loggedIn;
+    },
+    setUsernameLocal(state,username) {
+      state.username = username;
     },
     socketConnected(state,value) {
       state.socketConnected = value;
