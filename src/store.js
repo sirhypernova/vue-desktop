@@ -11,7 +11,8 @@ export default new Vuex.Store({
     activeWindows: {},
     activeApp: 0,
     maxActive: 1,
-    credentials: ''
+    loggedIn: false,
+    socketConnected: false
   },
   mutations: {
     setTitle(state,title) {
@@ -59,8 +60,11 @@ export default new Vuex.Store({
       if (!(pid in state.activeWindows)) return;
       state.activeApp = state.activeWindows[pid].active;
     },
-    setCredentials(state,credentials) {
-      state.credentials = credentials;
+    setLoggedIn(state,loggedIn) {
+      state.loggedIn = loggedIn;
+    },
+    socketConnected(state,value) {
+      state.socketConnected = value;
     }
   },
   actions: {

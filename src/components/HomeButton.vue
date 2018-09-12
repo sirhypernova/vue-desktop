@@ -86,10 +86,10 @@
             },
             loggedIn: {
                 get() {
-                    return this.$store.state.credentials;
+                    return this.$store.state.loggedIn;
                 },
-                set(credentials) {
-                    this.$store.commit('setCredentials',credentials);
+                set(value) {
+                    this.$store.commit('setLoggedIn',value);
                 }
             }
         }

@@ -28,7 +28,7 @@
       },
       windows() {
           return this.$store.state.activeWindows;
-      }
+      },
     },
     components: {
       login: Login
