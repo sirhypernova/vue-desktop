@@ -1,4 +1,4 @@
-export const port = 8082;
-export const ip = '64.140.150.108';
+export const port = 8080;
+export const ip = 'vue-railrunner16.c9users.io';
 
 export default {port,ip};
