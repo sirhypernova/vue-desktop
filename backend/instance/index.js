@@ -98,6 +98,23 @@ module.exports = class DesktopAPI {
                     resolve();
                 });
             });
+            
+            this.db.schema.hasTable('desktop').then(exists => {
+                if (exists) return;
+                this.db.schema.createTable('desktop',(table) => {
+                    table.increments();
+                    
+                    table.string('type');
+                    table.string('app');
+                    table.integer('x');
+                    table.integer('y');
+                    table.integer('user');
+                }).then(() => {
+                    this.db.insert({type: 'app', app: 'SettingsWindow',x: 0, y: 0, user: 1}).into('desktop').then(() => {
+                        this.db.insert({type: 'app', app: 'PlexWindow',x: 1, y: 0, user: 1}).into('desktop').then();
+                    });
+                });
+            });
         })
         
     }
@@ -111,8 +128,6 @@ module.exports = class DesktopAPI {
                 this.config.ip = ip;
                 this.http.listen(port,ip,resolve);
             })
-        }).then(() => {
-            
         })
     }
 }

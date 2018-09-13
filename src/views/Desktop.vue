@@ -1,6 +1,7 @@
 <template>
   <div :style="desktopStyle">
     <login>
+      <desktopgrid></desktopgrid>
       <component v-for="(window,pid) in windows" :key="pid" :is="window.component" :pid="pid"></component>
       <taskbar></taskbar>
     </login>
@@ -9,6 +10,7 @@
 
 <script>
   import Login from '@/views/Login';
+  import DesktopGrid from '@/components/DesktopGrid';
 
   export default {
     mounted() {
@@ -31,7 +33,8 @@
       },
     },
     components: {
-      login: Login
+      login: Login,
+      desktopgrid: DesktopGrid
     }
   }
 </script>

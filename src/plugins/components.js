@@ -4,6 +4,7 @@ import Taskbar from '@/components/Taskbar';
 import HomeButton from '@/components/HomeButton';
 import SettingsWindow from '@/components/windows/Settings';
 import PlexWindow from '@/components/windows/Plex';
+import FrameWindow from '@/components/windows/Frame';
 import TaskbarItem from '@/components/TaskbarItem';
 import * as VueWindow from '@hscmap/vue-window'
 import Swatches from 'vue-swatches';
@@ -16,5 +17,6 @@ Vue.component('taskbaritem',TaskbarItem);
 Vue.component('homebutton',HomeButton);
 Vue.component('SettingsWindow',SettingsWindow);
 Vue.component('PlexWindow',PlexWindow);
+Vue.component('FrameWindow',FrameWindow);
 Vue.component('swatches',Swatches);
 Vue.use(VueWindow)

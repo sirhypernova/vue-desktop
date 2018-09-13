@@ -11,6 +11,7 @@
     "@hscmap/vue-window": "^2.2.5",
     "axios": "^0.18.0",
     "vue": "^2.5.17",
+    "vue-grid-layout": "^2.2.0",
     "vue-router": "^3.0.1",
     "vue-swatches": "^1.0.1",
     "vuetify": "^1.0.19",

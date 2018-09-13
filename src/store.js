@@ -14,7 +14,8 @@ export default new Vuex.Store({
     maxActive: 1,
     loggedIn: false,
     username: '',
-    socketConnected: false
+    socketConnected: false,
+    desktopIconsView: []
   },
   mutations: {
     setTitle(state,title) {
@@ -73,6 +74,18 @@ export default new Vuex.Store({
     },
     socketConnected(state,value) {
       state.socketConnected = value;
+    },
+    updateIconsView(state,data) {
+      state.desktopIconsView = data;
+    },
+    updateIconView(state,data) {
+      data.i = data.id;
+      data.w = 1;
+      data.h = 1;
+      Vue.set(state.desktopIconsView,data.id-1,data);
+    },
+    removeIcon(state,id) {
+      Vue.delete(state.desktopIconsView,id-1);
     }
   },
   actions: {

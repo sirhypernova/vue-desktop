@@ -8,6 +8,8 @@ export default class Connection {
         this.socket.on('connect',this.connect.bind(this));
         this.socket.on('disconnect',this.disconnect.bind(this));
         this.socket.on('setBackground',this.setBackgroundEvent.bind(this));
+        this.socket.on('updateIcon',this.updateIconEvent.bind(this));
+        this.socket.on('removeIconEvent',this.removeIconEvent.bind(this));
         
         this.setup = true;
     }
@@ -55,5 +57,25 @@ export default class Connection {
     
     fetchUserData(callback) {
         this.socket.emit('fetchUserData',callback);
+    }
+    
+    fetchDesktop(callback) {
+        this.socket.emit('fetchDesktop',callback);
+    }
+    
+    updateIcon(data) {
+        this.socket.emit('updateIcon',data);
+    }
+    
+    updateIconEvent(data) {
+        store.commit('updateIconView',data);
+    }
+    
+    removeIconEvent(id) {
+        store.commit('removeIcon',id);
+    }
+    
+    removeIcon(id) {
+        this.socket.emit('removeIcon',id);
     }
 }
