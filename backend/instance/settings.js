@@ -21,6 +21,10 @@ module.exports = {
         if (Object.keys(data).length < 2) return;
         var updateData = Object.assign({},data);
         delete updateData.id;
+        delete updateData.i;
+        delete updateData.w;
+        delete updateData.h;
+        delete updateData.moved;
         this.api.db('desktop').update(updateData).where('id',data.id).then();
         this.socket.broadcast.to(this.socket.handshake.session.user.id).emit('updateIcon',data);
     },

@@ -5,9 +5,6 @@
 </template>
 
 <script>
-    import store from '@/store';
-    import { plexURL } from '@/config';
-    
     export default {
         name: 'FrameWindow',
         props: ['pid'],
@@ -21,7 +18,6 @@
         },
         mounted() {
             this.url = this.$store.state.activeWindows[this.pid].windowSettings.url;
-            // if (this.plexURL == undefined || typeof this.plexURL != 'string' || !this.plexURL.length) this.$store.commit('removeWindow',this.pid);
         }
     }
 </script>

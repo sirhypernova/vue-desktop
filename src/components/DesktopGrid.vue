@@ -49,7 +49,7 @@
                 this.iconSize = Math.floor(window.innerWidth/this.colNum);
             });
             api.fetchDesktop(desktop => {
-                desktop.forEach((val,index) => {
+                desktop.forEach((val) => {
                     val.i = val.id;
                     val.w = 1;
                     val.h = 1;
@@ -60,7 +60,8 @@
         methods: {
             layoutUpdated(layout) {
                 layout.forEach(val => {
-                    api.updateIcon({id: val.id, x: val.x, y: val.y});
+                    var update = Object.assign(this.$store.state.desktopIconsView[val.id-1],{x: val.x, y: val.y})
+                    api.updateIcon(update);
                 })
             },
             getIcon(data) {
@@ -84,7 +85,6 @@
                     return this.$store.state.desktopIconsView;
                 },
                 set(icons) {
-                    console.log(icons);
                     this.$store.commit('updateIconsView',icons);
                 }
             }

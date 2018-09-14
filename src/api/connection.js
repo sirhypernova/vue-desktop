@@ -9,7 +9,7 @@ export default class Connection {
         this.socket.on('disconnect',this.disconnect.bind(this));
         this.socket.on('setBackground',this.setBackgroundEvent.bind(this));
         this.socket.on('updateIcon',this.updateIconEvent.bind(this));
-        this.socket.on('removeIconEvent',this.removeIconEvent.bind(this));
+        this.socket.on('removeIcon',this.removeIconEvent.bind(this));
         
         this.setup = true;
     }
