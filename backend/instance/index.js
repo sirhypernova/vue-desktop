@@ -110,9 +110,7 @@ module.exports = class DesktopAPI {
                     table.integer('y');
                     table.integer('user');
                 }).then(() => {
-                    this.db.insert({type: 'app', app: 'SettingsWindow',x: 0, y: 0, user: 1}).into('desktop').then(() => {
-                        this.db.insert({type: 'app', app: 'PlexWindow',x: 1, y: 0, user: 1}).into('desktop').then();
-                    });
+                    this.db.insert({type: 'app', app: 'SettingsWindow',x: 0, y: 0, user: 1}).into('desktop').then();
                 });
             });
         })
