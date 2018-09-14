@@ -1,5 +1,5 @@
 <template>
-    <div id="content" style="cursor: default;">
+    <div id="content" style="cursor: default;" @contextmenu.prevent.capture="$refs.menu.open">
         <grid-layout
                 :layout="layout"
                 :col-num="colNum"
@@ -24,6 +24,11 @@
                 <desktopicon :iconSize="iconSize-1" :color="getColor(icon)" :icon="getIcon(icon)" :data="icon"></desktopicon>
             </grid-item>
         </grid-layout>
+        <vue-context ref="menu">
+            <ul>
+                <li @click="addShortcut">Add Shortcut</li>
+            </ul>
+        </vue-context>
     </div>
 </template>
 
@@ -58,9 +63,14 @@
             })
         },
         methods: {
+            addShortcut() {
+                this.$store.commit('createWindow',{component: 'CreateIconWindow',windowSettings: {name: 'Add Shortcut', open: true}, style: {icon: 'create'}});
+            },
             layoutUpdated(layout) {
                 layout.forEach(val => {
-                    var update = Object.assign(this.$store.state.desktopIconsView[val.id-1],{x: val.x, y: val.y})
+                    var ico = layout.filter(icon => icon.id == val.id)[0];
+                    var index = layout.indexOf(ico);
+                    var update = Object.assign(this.$store.state.desktopIconsView[index],{x: val.x, y: val.y})
                     api.updateIcon(update);
                 })
             },
@@ -90,7 +100,7 @@
             }
         },
         components: {
-            desktopicon: DesktopIcon
+            desktopicon: DesktopIcon,
         }
     }
 </script>
@@ -98,11 +108,11 @@
 <style>
 #content {
     width: 100%;
-    height: calc(100% - 56px) !important;
+    height: calc(100vh - 56px) !important;
 }
 
 .vue-grid-layout {
-    height: calc(100% - 56px) !important;
+    height: 100% !important;
 }
 
 .vue-grid-item:hover {

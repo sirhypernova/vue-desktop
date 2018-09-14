@@ -28,6 +28,13 @@ module.exports = {
         this.api.db('desktop').update(updateData).where('id',data.id).then();
         this.socket.broadcast.to(this.socket.handshake.session.user.id).emit('updateIcon',data);
     },
+    addIcon(data) {
+        if (data == undefined || typeof data != 'object') return;
+        if (data.id == undefined || typeof data.id != 'number') return;
+        if (Object.keys(data).length != 6) return;
+        this.api.db('desktop').insert(data).where('id',data.id).then();
+        this.socket.broadcast.to(this.socket.handshake.session.user.id).emit('updateIcon',data);
+    },
     removeIcon(id) {
         if (id == undefined || typeof id != 'number') return;
         this.api.db('desktop').where('id',id).del().then();

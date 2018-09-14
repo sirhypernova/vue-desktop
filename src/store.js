@@ -79,13 +79,21 @@ export default new Vuex.Store({
       state.desktopIconsView = data;
     },
     updateIconView(state,data) {
+      var ico = state.desktopIconsView.filter(icon => icon.id == data.id)[0];
+      var index = state.desktopIconsView.indexOf(ico);
       data.i = data.id;
       data.w = 1;
       data.h = 1;
-      Vue.set(state.desktopIconsView,data.id-1,data);
+      if (index != -1) {
+        Vue.set(state.desktopIconsView,index,data);
+      } else {
+        state.desktopIconsView.push(data);
+      }
     },
     removeIcon(state,id) {
-      Vue.delete(state.desktopIconsView,id-1);
+      var ico = state.desktopIconsView.filter(icon => icon.id == id)[0];
+      var index = state.desktopIconsView.indexOf(ico);
+      Vue.delete(state.desktopIconsView,index);
     }
   },
   actions: {

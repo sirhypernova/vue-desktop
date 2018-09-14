@@ -16,6 +16,7 @@ import {
   VMenu,
   VCard,
   VDivider,
+  VSelect
 } from 'vuetify'
 import 'vuetify/src/stylus/app.styl'
 
@@ -36,5 +37,6 @@ Vue.use(Vuetify, {
     VMenu,
     VCard,
     VDivider,
+    VSelect
   },
 })

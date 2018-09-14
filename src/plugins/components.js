@@ -7,6 +7,7 @@ import PlexWindow from '@/components/windows/Plex';
 import FrameWindow from '@/components/windows/Frame';
 import TaskbarItem from '@/components/TaskbarItem';
 import { VueContext } from 'vue-context';
+import CreateIconWindow from '@/components/windows/CreateIcon';
 import * as VueWindow from '@hscmap/vue-window'
 import Swatches from 'vue-swatches';
 
@@ -19,6 +20,7 @@ Vue.component('homebutton',HomeButton);
 Vue.component('SettingsWindow',SettingsWindow);
 Vue.component('PlexWindow',PlexWindow);
 Vue.component('FrameWindow',FrameWindow);
+Vue.component('CreateIconWindow',CreateIconWindow);
 Vue.component('swatches',Swatches);
 Vue.component('vue-context',VueContext);
 Vue.use(VueWindow)

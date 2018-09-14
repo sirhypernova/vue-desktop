@@ -78,4 +78,8 @@ export default class Connection {
     removeIcon(id) {
         this.socket.emit('removeIcon',id);
     }
+    
+    addIcon(data) {
+        this.socket.emit('addIcon',data);
+    }
 }
