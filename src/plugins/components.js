@@ -24,3 +24,6 @@ Vue.component('CreateIconWindow',CreateIconWindow);
 Vue.component('swatches',Swatches);
 Vue.component('vue-context',VueContext);
 Vue.use(VueWindow)
+
+var apps = require.context('@/apps', true, /\.js|\.vue$/);
+apps.keys().forEach(apps);

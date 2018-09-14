@@ -72,7 +72,7 @@
                     if (x == -1) y++;
                 }
 
-                var component = this.realApp.split(' ').join() + 'Window';
+                var component = this.realApp.split(' ').join('') + 'Window';
                 var data = {id: iconID, x: x, y: y, type: this.type.toLowerCase(), app: this.type == 'App' ? component : this.url};
                 var db = Object.assign(data,{user: 1});
                 api.addIcon(db);

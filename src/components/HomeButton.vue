@@ -79,6 +79,7 @@
             },
             clearAllApps() {
               this.menu = false;
+              this.clearApps = false;
               this.$store.commit('clearApps');
             }
         },
