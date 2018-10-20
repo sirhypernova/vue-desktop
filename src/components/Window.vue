@@ -2,6 +2,7 @@
     <component :is="'hsc-window-style-'+type">
       <hsc-window @click.shift.right.prevent.native="minimize"
       @click.native="setActive"
+      @click="setActive"
       :title="title"
       :closeButton="close"
       :resizable="resizable"

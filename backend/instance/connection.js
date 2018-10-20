@@ -2,6 +2,7 @@ module.exports = class Connection {
     constructor(socket,api) {
         this.socket = socket;
         this.api = api;
+        this.terminals = {};
         
         this.bound = false;
         
@@ -16,6 +17,9 @@ module.exports = class Connection {
     disconnect() {
         console.log(`Socket with ID ${this.socket.id} disconnected`);
         delete this.api.connections[this.socket.id];
+        for (var key in this.terminals) {
+            this.terminals[key].kill();
+        }
     }
     
     login(data,callback) {
@@ -68,9 +72,17 @@ module.exports = class Connection {
         if (this.bound) return;
         this.bound = true;
         const settings = require('./settings');
+        const terminal = require('./terminal');
         for (let key in settings) {
             this.socket.on(key,(...data) => {
                 let value = settings[key];
+                if (!this.socket.handshake.session.user) return;
+                value.bind(this)(...data);
+            });
+        }
+        for (let key in terminal) {
+            this.socket.on(key,(...data) => {
+                let value = terminal[key];
                 if (!this.socket.handshake.session.user) return;
                 value.bind(this)(...data);
             });

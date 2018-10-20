@@ -5,11 +5,15 @@ export default class Connection {
     constructor(ip,port) {
         this.socket = io(`http://${ip}:${port}`);
         
+        this.terminalEvents = {};
+        
         this.socket.on('connect',this.connect.bind(this));
         this.socket.on('disconnect',this.disconnect.bind(this));
         this.socket.on('setBackground',this.setBackgroundEvent.bind(this));
         this.socket.on('updateIcon',this.updateIconEvent.bind(this));
         this.socket.on('removeIcon',this.removeIconEvent.bind(this));
+        this.socket.on('terminalData',this.terminalDataEvent.bind(this));
+        this.socket.on('terminalClose',this.terminalCloseEvent.bind(this));
         
         this.setup = true;
     }
@@ -81,5 +85,31 @@ export default class Connection {
     
     addIcon(data) {
         this.socket.emit('addIcon',data);
+    }
+    
+    createTerminal(pid,size,events) {
+        this.socket.emit('createTerminal',parseInt(pid),size);
+        this.terminalEvents[pid] = events;
+    }
+    
+    closeTerminal(pid) {
+        this.socket.emit('terminalClose',parseInt(pid));
+    }
+    
+    resizeTerminal(pid,size) {
+        this.socket.emit('terminalResize',parseInt(pid),size);
+    }
+    
+    sendTerminalData(pid,data) {
+        this.socket.emit('terminalData',parseInt(pid),data);
+    }
+    
+    terminalDataEvent(pid,data) {
+        this.terminalEvents[pid].$emit('data',data);
+    }
+    
+    terminalCloseEvent(pid) {
+        store.commit('removeWindow',pid);
+        delete this.terminalEvents[pid];
     }
 }
