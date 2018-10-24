@@ -8,6 +8,7 @@ export default class Connection {
         this.terminalEvents = {};
         
         this.socket.on('connect',this.connect.bind(this));
+        this.socket.on('reconnect',this.reconnect.bind(this));
         this.socket.on('disconnect',this.disconnect.bind(this));
         this.socket.on('setBackground',this.setBackgroundEvent.bind(this));
         this.socket.on('updateIcon',this.updateIconEvent.bind(this));
@@ -16,6 +17,10 @@ export default class Connection {
         this.socket.on('terminalClose',this.terminalCloseEvent.bind(this));
         
         this.setup = true;
+    }
+    
+    reconnect() {
+        this.socket.emit('clientReconnect');
     }
     
     connect() {

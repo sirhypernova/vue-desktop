@@ -6,12 +6,17 @@ module.exports = class Connection {
         
         this.bound = false;
         
+        socket.on('clientReconnect',this.reconnect.bind(this));
         socket.on('disconnect',this.disconnect.bind(this));
         socket.on('login',this.login.bind(this));
         socket.on('logout',this.logout.bind(this));
         socket.on('isLoggedIn', this.isLoggedIn.bind(this));
         
         console.log(`Socket connected with ID ${socket.id}`);
+    }
+    
+    reconnect() {
+        this.isLoggedIn(() => {});
     }
     
     disconnect() {
@@ -56,6 +61,9 @@ module.exports = class Connection {
         this.socket.leave(this.socket.handshake.session.user.id);
         delete this.socket.handshake.session.user;
         this.socket.handshake.session.save();
+        for (var key in this.terminals) {
+            this.terminals[key].kill();
+        }
         callback();
     }
     
