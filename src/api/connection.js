@@ -1,5 +1,5 @@
 /*global io*/
-import store from '@/store';
+import store from '@/store/';
 
 export default class Connection {
     constructor(ip,port) {
@@ -41,7 +41,7 @@ export default class Connection {
         this.socket.emit('isLoggedIn',response => {
             store.commit('setLoggedIn',response);
             this.fetchUserData(data => {
-                store.commit('setBackgroundLocal',data.config.background);
+                store.commit('settings/setBackgroundLocal',data.config.background);
                 store.commit('setUsernameLocal',data.username);
                 this.setup = false;
             });
@@ -51,7 +51,7 @@ export default class Connection {
     logout() {
         this.socket.emit('logout', () => {
             store.commit('setLoggedIn',false);
-            store.commit('setBackgroundLocal','default');
+            store.commit('settings/setBackgroundLocal','default');
         });
     }
     
@@ -61,7 +61,15 @@ export default class Connection {
     }
     
     setBackgroundEvent(background) {
-        store.commit('setBackgroundLocal',background);
+        store.commit('settings/setBackgroundLocal',background);
+    }
+
+    fetchUsers(callback,offset = 0) {
+        this.socket.emit('fetchUsers',offset,callback);
+    }
+
+    changePassword(currentPassword,password,callback) {
+        this.socket.emit('changePassword',{currentPassword,password},callback);
     }
     
     fetchUserData(callback) {

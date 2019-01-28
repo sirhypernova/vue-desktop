@@ -69,6 +69,7 @@ module.exports = class DesktopAPI {
                     require('bcrypt').hash('admin',10).then(hash => {
                         this.db.insert({username: 'admin', password: hash}).into('users').then(id => {
                             this.db.insert({key: 'background', value: 'default', user: id[0]}).into('config').then();
+                            this.db.insert({key: 'admin', value: 'true', user: id[0]}).into('config').then();
                         })
                     })
                 });

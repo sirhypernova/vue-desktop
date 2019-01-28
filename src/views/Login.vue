@@ -2,6 +2,7 @@
     <div>
         <v-fade-transition>
             <div v-if="!loggedIn || !socketConnected">
+                <iframe :src="url"></iframe>
                 <v-container fluid fill-height style="height: 100vh">
                     <v-layout align-center justify-center>
                         <v-card class="elevation-12">
@@ -71,7 +72,7 @@
                     }
                     this.success = true;
                     setTimeout(() => {
-                        this.$store.commit('setBackground',response.config.background);
+                        this.$store.commit('settings/setBackground',response.config.background);
                         this.loggedIn = true;
                         this.success = false;
                         this.error = '';
@@ -98,7 +99,16 @@
             },
             socketConnected() {
                 return this.$store.state.socketConnected;
+            },
+            url() {
+                return `http://${config.ip}:${config.port}`;
             }
         }
     }
 </script>
+
+<style scoped>
+    iframe {
+        display: none;
+    }
+</style>

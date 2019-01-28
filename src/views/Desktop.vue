@@ -25,8 +25,11 @@
       title() {
         return this.$store.state.title;
       },
+      background() {
+        return this.$store.state.settings.background;
+      },
       desktopStyle() {
-        return `width: 100%; height: 100%; transition: 0.5s; background-color: ${this.$store.state.background == 'default' ? '#42A5F5' : this.$store.state.background}`;
+        return `width: 100%; height: 100%; transition: 0.5s; background-color: ${this.background == 'default' ? '#42A5F5' : this.background}`;
       },
       windows() {
           return this.$store.state.activeWindows;

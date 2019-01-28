@@ -16,8 +16,11 @@ import {
   VMenu,
   VCard,
   VDivider,
-  VSelect
+  VSelect,
+  VHover,
+  VProgressLinear
 } from 'vuetify'
+
 import 'vuetify/src/stylus/app.styl'
 
 Vue.use(Vuetify, {
@@ -37,6 +40,8 @@ Vue.use(Vuetify, {
     VMenu,
     VCard,
     VDivider,
-    VSelect
+    VSelect,
+    VHover,
+    VProgressLinear
   },
 })

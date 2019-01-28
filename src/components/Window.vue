@@ -1,6 +1,8 @@
 <template>
     <component :is="'hsc-window-style-'+type">
       <hsc-window @click.shift.right.prevent.native="minimize"
+      @mousedown.left.native="mouseDown"
+      @mouseup.left.native="mouseUp"
       @click.native="setActive"
       @click="setActive"
       :title="title"
@@ -81,11 +83,20 @@
             parent: {
                 type: Number,
                 default: () => 0
+            },
+            titleMouseDown: {
+                type: Function,
+                default: () => () => {}
+            },
+            titleMouseUp: {
+                type: Function,
+                default: () => () => {}
             }
         },
         data() {
             return {
-                open: true
+                open: true,
+                mousedown: false,
             }
         },
         methods: {
@@ -95,6 +106,16 @@
             },
             setActive() {
                 this.$store.commit('setActiveApp',this.parent);
+            },
+            mouseDown(e) {
+                if (e.path[0].parentElement.className != "titlebar draggable-handle") return
+                this.titleMouseDown();
+                this.mousedown = true;
+            },
+            mouseUp() {
+                if (!this.mousedown) return
+                this.mousedown = false;
+                this.titleMouseUp();
             }
         },
         computed: {

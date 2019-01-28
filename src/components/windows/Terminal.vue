@@ -10,7 +10,7 @@
 <script>
     import Vue from 'vue';
     import HoverUtil from '@/components/Utils/Hover';
-    import store from '@/store';
+    import store from '@/store/';
     import 'xterm/dist/xterm.css';
     import 'vue-resize/dist/vue-resize.css'
     import { Terminal } from 'xterm'

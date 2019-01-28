@@ -1,23 +1,15 @@
 <template>
     <window title="Settings" :close="true" :parent="parseInt(pid)" :resizable="false" :width="400" :height="400">
-        <hoverutil>
-            <v-layout row justify-space-between>
-                <v-flex xs10>
-                    <swatches v-model="background" colors="material-basic" popover-to="right" swatch-size="30" show-fallback>
-                        <h1 slot="trigger">Background Color</h1>
-                    </swatches>
-                </v-flex>
-                <v-flex xs2>
-                    <swatches v-model="background" colors="material-basic" popover-to="left" swatch-size="30" show-fallback></swatches>
-                </v-flex>
-            </v-layout>
-        </hoverutil>
+        <component :is="currentScreen" :pid="pid" style="height: 100%;"></component>
     </window>
 </template>
 
 <script>
     import HoverUtil from '@/components/Utils/Hover';
-    import store from '@/store';
+    import UserManager from '@/components/windows/Settings/UserManager';
+    import MainScreen from '@/components/windows/Settings/MainScreen';
+    import EditUser from '@/components/windows/Settings/EditUser';
+    import store from '@/store/';
     
     const component = {
         name: 'SettingsWindow',
@@ -44,20 +36,42 @@
         data() {
             return {
                 name: component.name,
+                screens: ['MainScreen','UserManager'],
             }
         },
         computed: {
-            background: {
+            currentScreen: {
                 get() {
-                    return this.$store.state.background;
+                    return this.$store.state.activeWindows[this.pid].data.currentScreen;
                 },
-                set(bg) {
-                    this.$store.commit('setBackground',bg);
+                set(data) {
+                    this.$store.commit('setWindowData',{pid: this.pid, key: 'currentScreen',value: data});
+                }
+            },
+            editUser: {
+                get() {
+                    return this.$store.state.activeWindows[this.pid].data.editUser;
+                },
+                set(data) {
+                    this.$store.commit('setWindowData',{pid: this.pid, key: 'editUser',value: data});
                 }
             }
         },
+        mounted() {
+            this.currentScreen = 'MainScreen';
+            this.editUser = false;
+        },
         components: {
-            hoverutil: HoverUtil
+            hoverutil: HoverUtil,
+            UserManager,
+            MainScreen,
+            EditUser
         }
     }
 </script>
+
+<style>
+    .window .content {
+        height: 100%;
+    }
+</style>

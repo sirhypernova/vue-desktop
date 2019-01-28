@@ -3,6 +3,11 @@ module.exports = class Connection {
         this.socket = socket;
         this.api = api;
         this.terminals = {};
+
+        this.events = [
+            require('./settings'),
+            require('./terminal')
+        ]
         
         this.bound = false;
         
@@ -79,21 +84,30 @@ module.exports = class Connection {
     bindEvents() {
         if (this.bound) return;
         this.bound = true;
-        const settings = require('./settings');
-        const terminal = require('./terminal');
-        for (let key in settings) {
-            this.socket.on(key,(...data) => {
-                let value = settings[key];
-                if (!this.socket.handshake.session.user) return;
-                value.bind(this)(...data);
-            });
-        }
-        for (let key in terminal) {
-            this.socket.on(key,(...data) => {
-                let value = terminal[key];
-                if (!this.socket.handshake.session.user) return;
-                value.bind(this)(...data);
-            });
-        }
+        this.events.forEach(event => {
+            for (let key in event) {
+                this.socket.on(key,(...data) => {
+                    let value = event[key];
+                    if (!this.socket.handshake.session.user) return;
+                    value.bind(this)(...data);
+                });
+            }
+        })
+        // const settings = require('./settings');
+        // const terminal = require('./terminal');
+        // for (let key in settings) {
+        //     this.socket.on(key,(...data) => {
+        //         let value = settings[key];
+        //         if (!this.socket.handshake.session.user) return;
+        //         value.bind(this)(...data);
+        //     });
+        // }
+        // for (let key in terminal) {
+        //     this.socket.on(key,(...data) => {
+        //         let value = terminal[key];
+        //         if (!this.socket.handshake.session.user) return;
+        //         value.bind(this)(...data);
+        //     });
+        // }
     }
 }
