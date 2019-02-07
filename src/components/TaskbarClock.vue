@@ -34,6 +34,9 @@
                 } else {
                     this.pm = false;
                 }
+                if (this.minute < 10) {
+                    this.minute = '0' + this.minute;
+                }
                 if (this.seconds < 10) {
                     this.seconds = '0' + this.seconds;
                 }
