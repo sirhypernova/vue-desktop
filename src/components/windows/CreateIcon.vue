@@ -21,6 +21,12 @@
                 :rules="urlRules"
                 required
           ></v-text-field>
+            <v-text-field v-if="type == 'xpra'"
+                          label="xpra app"
+                          v-model="xpra"
+                          :rules="xpraRules"
+                          required
+            ></v-text-field>
           <v-btn :disabled="!valid" @click="add">submit</v-btn>
         </v-form>
     </window>
@@ -48,11 +54,17 @@
                 type: 'App',
                 app: '',
                 url: '',
+                xpra: '',
                 urlRules: [
                     v => !!v || 'Required',
                     v => v.match(/(https?:\/\/[^\s]+)/g) || 'Please provide a valid URL'
                 ],
-                types: ['App','Frame'],
+                xpraRules: [
+                    v => !!v || 'Required',
+                    v => v.length >= 3 || 'The length must be at least 3 characters',
+                    v => v.length <= 24 || 'The length must be at most 24 characters'
+                ],
+                types: ['App','Frame','xpra'],
                 valid: false
             }
         },
@@ -73,7 +85,15 @@
                 }
 
                 var component = this.realApp.split(' ').join('') + 'Window';
-                var data = {id: iconID, x: x, y: y, type: this.type.toLowerCase(), app: this.type == 'App' ? component : this.url};
+                let appData;
+                if (this.type == 'App') {
+                    appData = component;
+                } else if (this.type == 'Frame') {
+                    appData = this.url;
+                } else if (this.type == 'xpra') {
+                    appData = this.xpra;
+                }
+                var data = {id: iconID, x: x, y: y, type: this.type.toLowerCase(), app: appData};
                 var db = Object.assign(data,{user: 1});
                 api.addIcon(db);
                 this.$store.commit('updateIconView',data);

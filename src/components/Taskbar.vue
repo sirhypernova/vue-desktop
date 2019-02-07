@@ -3,11 +3,14 @@
         <v-layout>
             <homebutton></homebutton>
             <taskbaritem v-for="(window,active) in windows" :key="active" :pid="parseInt(window.pid)" :window="window"></taskbaritem>
+            <TaskbarClock></TaskbarClock>
         </v-layout>
     </v-bottom-nav>
 </template>
 
 <script>
+    import TaskbarClock from '@/components/TaskbarClock';
+
     export default {
         name: 'taskbar',
         data() {
@@ -30,6 +33,9 @@
                     this.$store.commit('setActiveApp',app);
                 }
             }
+        },
+        components: {
+            TaskbarClock
         }
     }
 </script>

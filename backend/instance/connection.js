@@ -6,8 +6,9 @@ module.exports = class Connection {
 
         this.events = [
             require('./settings'),
-            require('./terminal')
-        ]
+            require('./terminal'),
+            require('./xpra')
+        ];
         
         this.bound = false;
         
@@ -69,6 +70,9 @@ module.exports = class Connection {
         for (var key in this.terminals) {
             this.terminals[key].kill();
         }
+        for (var key in this.xpraServers) {
+            this.xpraServers[key].kill('SIGTERM');
+        }
         callback();
     }
     
@@ -86,6 +90,10 @@ module.exports = class Connection {
         this.bound = true;
         this.events.forEach(event => {
             for (let key in event) {
+                if (key === 'onLoad') {
+                    event[key].bind(this)();
+                    continue;
+                }
                 this.socket.on(key,(...data) => {
                     let value = event[key];
                     if (!this.socket.handshake.session.user) return;
@@ -93,21 +101,5 @@ module.exports = class Connection {
                 });
             }
         })
-        // const settings = require('./settings');
-        // const terminal = require('./terminal');
-        // for (let key in settings) {
-        //     this.socket.on(key,(...data) => {
-        //         let value = settings[key];
-        //         if (!this.socket.handshake.session.user) return;
-        //         value.bind(this)(...data);
-        //     });
-        // }
-        // for (let key in terminal) {
-        //     this.socket.on(key,(...data) => {
-        //         let value = terminal[key];
-        //         if (!this.socket.handshake.session.user) return;
-        //         value.bind(this)(...data);
-        //     });
-        // }
     }
 }

@@ -1,4 +1,5 @@
 const Connection = require('./connection');
+const fs = require('fs');
 
 module.exports = class DesktopAPI {
     constructor(config = {port: 8080,ip: '0.0.0.0'}) {
@@ -12,6 +13,10 @@ module.exports = class DesktopAPI {
         io.on('connection', (socket) => {
             this.connections[socket.id] = new Connection(socket,this);
         });
+
+        if (!fs.existsSync('instance/programs.js')) {
+            fs.writeFileSync('instance/programs.js','module.exports = [];');
+        }
     }
     
     setupSessions() {
@@ -41,6 +46,31 @@ module.exports = class DesktopAPI {
         
         this.app.get('/',(req,res) => {
             res.sendStatus(200);
+        });
+
+        const proxy = require('http-proxy').createProxyServer({ws: true});
+        proxy.on('error',(err,req,res) => {
+            if (res.send) res.send('Invalid Port');
+        });
+        this.app.use('/proxy/:port',(req,res,next) => {
+            if (!req.session.user) return res.sendStatus(403);
+            if (!req.params.port) return res.send('Invalid Port');
+            if (isNaN(Number(req.params.port))) return res.send('Invalid Port');
+            let port = parseInt(req.params.port);
+            if (port < 4000 || port > 5000) return res.send('Invalid Port');
+            req.port = port;
+            proxy.web(req,res,{target: 'http://localhost:'+port+'/'});
+        });
+
+        this.http.on('upgrade',(req,res) => {
+            if (req.url.startsWith('/proxy/')) {
+                let split = req.url.split('/');
+                if (!split[2]) return;
+                if (isNaN(Number(split[2]))) return;
+                let port = parseInt(split[2]);
+                if (port < 4000 || port > 5000) return;
+                proxy.ws(req,res,{target: 'http://localhost:'+port+'/'});
+            }
         });
     }
     

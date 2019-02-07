@@ -64,6 +64,14 @@ export default class Connection {
         store.commit('settings/setBackgroundLocal',background);
     }
 
+    startXpraServer(program,callback) {
+        this.socket.emit('startXpraServer',program,callback);
+    }
+
+    closeXpraServer(port) {
+        this.socket.emit('closeXpraServer',port);
+    }
+
     fetchUsers(callback,offset = 0) {
         this.socket.emit('fetchUsers',offset,callback);
     }

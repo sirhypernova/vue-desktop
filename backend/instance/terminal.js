@@ -51,4 +51,4 @@ module.exports = {
         if (!(pid in this.terminals)) return;
         this.terminals[pid].kill();
     }
-}
+};

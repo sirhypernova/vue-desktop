@@ -75,16 +75,22 @@
                 })
             },
             getIcon(data) {
-                if (data.type == 'frame') return 'launch';
-                if (data.type == 'app') {
+                if (data.type === 'frame') return 'launch';
+                if (data.type === 'app') {
                     if (data.app in this.$store.state.menuApps) return this.$store.state.menuApps[data.app].style.icon;
+                }
+                if (data.type === 'xpra') {
+                    return 'personal_video';
                 }
                 return 'launch';
             },
             getColor(data) {
-                if (data.type == 'frame') return 'teal';
-                if (data.type == 'app') {
+                if (data.type === 'frame') return 'teal';
+                if (data.type === 'app') {
                     if (data.app in this.$store.state.menuApps) return this.$store.state.menuApps[data.app].style.color;
+                }
+                if (data.type === 'xpra') {
+                    return 'blue';
                 }
                 return 'teal';
             }
