@@ -1,5 +1,5 @@
 <template>
-    <v-bottom-nav absolute :value="true" color="black" :active.sync="active" class="text-lg-right">
+    <v-bottom-nav absolute :value="true" color="black" :active.sync="active" class="text-xs-right">
         <v-layout>
             <homebutton></homebutton>
             <taskbaritem v-for="(window,active) in windows" :key="active" :pid="parseInt(window.pid)" :window="window"></taskbaritem>
