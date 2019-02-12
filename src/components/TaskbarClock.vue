@@ -40,6 +40,9 @@
                 if (this.seconds < 10) {
                     this.seconds = '0' + this.seconds;
                 }
+            },
+            noop() {
+                alert('oof');
             }
         }
     }
@@ -48,5 +51,6 @@
 <style scoped>
     h2 {
         color: white;
+        user-select: none;
     }
 </style>

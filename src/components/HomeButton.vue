@@ -105,5 +105,6 @@
 <style scoped>
   .v-menu__content {
     z-index: 2147483647;
+    user-select: none;
   }
 </style>

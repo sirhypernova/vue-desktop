@@ -1,5 +1,5 @@
 <template>
-    <window title="Terminal" :close="true" :parent="parseInt(pid)" :resizable="true" :minWidth="600" :minHeight="400">
+    <window title="Terminal" :close="true" :parent="parseInt(pid)" :resizable="true" :minWidth="600" :minHeight="400" @keydown.native="preventConsole">
         <div class="background">
             <div :id="'term-'+pid" class="term" :style="style"></div>
             <resize @notify="onresize"></resize>
@@ -75,6 +75,12 @@
             onresize() {
                 this.term.fit();
                 api.resizeTerminal(this.pid,{cols:this.term.cols,rows:this.term.rows})
+            },
+            preventConsole(e) {
+                if (e.ctrlKey && e.shiftKey && e.code == 'KeyC') {
+                    e.preventDefault();
+                    document.execCommand('copy');
+                }
             }
         },
         components: {

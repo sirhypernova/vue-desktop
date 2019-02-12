@@ -1,6 +1,6 @@
 <template>
     <div>
-        <v-icon :size="iconSize-1" :color="color" @dblclick.native="doubleClick" @contextmenu.prevent="$refs.menu.open">{{ icon }}</v-icon>
+        <v-icon :size="iconSize-1" :color="color" @dblclick.native="doubleClick" @contextmenu.prevent="$refs.menu.open" style="user-select: none;">{{ icon }}</v-icon>
         <div v-if="showText !== false" :style="textStyle">
             <p>{{showText}}</p>
         </div>
