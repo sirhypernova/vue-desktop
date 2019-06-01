@@ -9,7 +9,7 @@
   },
   "dependencies": {
     "@hscmap/vue-window": "^2.2.5",
-    "axios": "^0.18.0",
+    "axios": "^0.18.1",
     "vue": "^2.5.17",
     "vue-context": "^3.2.0",
     "vue-grid-layout": "^2.2.0",
